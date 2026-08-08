@@ -3,6 +3,8 @@ import qrcode from 'qrcode-terminal'
 import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
 
+const app = express()
+
 
 
 const MSG = `BEM VINDO, @{user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
