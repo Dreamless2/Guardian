@@ -115,7 +115,7 @@ async function main() {
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `{}`
+                        `Grou`
                     ])
                 }
 
