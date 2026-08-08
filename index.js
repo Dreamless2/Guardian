@@ -92,6 +92,7 @@ async function main() {
 
             const self = sock.user.id.split(':')[0]
 
+            let groupName = 'unknown'
             try {
                 const meta = await sock.groupMetadata(id)
                 groupName = meta.subject || 'unknown'
