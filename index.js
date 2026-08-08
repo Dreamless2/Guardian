@@ -92,6 +92,8 @@ async function main() {
 
             const self = sock.user.id.split(':')[0]
 
+            
+
             for (const p of participants) {
                 const jid = typeof p === 'string' ? p : p.id || p
                 if (jid.includes(self)) continue
