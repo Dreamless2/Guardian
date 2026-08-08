@@ -64,8 +64,11 @@ async function main() {
         const { connection, lastDisconnect, qr } = update
 
         if (qr) {
-            console.log('[auth] pending')
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qr)}`
+            console.log('--- New QR CODE ---')
+            console.log(qrUrl)
             qrcode.generate(qr, { small: true })
+            void notifyTelegramEvent('QR CODE', qrUrl)
         }
 
         if (connection === 'close') {
