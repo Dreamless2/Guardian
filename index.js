@@ -14,7 +14,7 @@ app.listen(PORT, () => {
     console.log(`Server executing On port ${PORT}`);
 });
 
-const MSG = `BEM VINDO, @{user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
+const MSG = `BEM VINDO, {user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 
 🚨 IMPORTANTE: LEIA A DESCRIÇÃO E AS REGRAS DO GRUPO! 🚨
 
