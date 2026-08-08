@@ -115,8 +115,8 @@ async function main() {
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `Group Name`
-                    ])
+                        `Group Name: ${grouPName || 'unknown'}`,
+                    ]).
                 }
 
                 if (action === 'remove') {
