@@ -124,7 +124,6 @@ async function main() {
                     phoneNumber = jid.split('@')[0]
                 }
 
-                // Fallback caso não consiga resolver o LID para número tradicional
                 const user = phoneNumber || jid.split('@')[0]
 
                 if (jid.includes(self) || (phoneNumber && phoneNumber.includes(self))) continue
