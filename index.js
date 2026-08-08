@@ -118,18 +118,18 @@ async function main() {
                     await sock.sendMessage(id, {
                         text,
                         mentions: [jid]
-                    })                 
-                    
+                    })
+
                     console.log(`[JOIN] ${user}`)
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `Group Name: ${groupName                        }`,
+                        `Group Name: ${groupName}`,
                     ].join('\n'))
                 }
 
                 if (action === 'remove') {
-                    console.log(`[LEAVE] ${user}`)                    
+                    console.log(`[LEAVE] ${user}`)
                     void notifyTelegramEvent('LEAVE', [
                         `User: ${user}`,
                         `Group: ${id}`,
