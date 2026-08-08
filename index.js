@@ -97,7 +97,7 @@ async function main() {
                 if (jid.includes(self)) continue
 
                 const user = jid.split('@')[0]
-                               
+
                 if (action === 'add') {
                     const now = Date.now()
                     if (now - (cache.get(id) || 0) < RATE_LIMIT) return
@@ -112,7 +112,7 @@ async function main() {
                     })                 
                     
                     console.log(`[JOIN] ${user}`)
-                    void notifyTelegramEvent('[JOIN]', `User: ${user}\nGroup: ${id}`)
+                    void notifyTelegramEvent('JOIN', `User: ${user}\nGroup: ${id}`)
                 }
 
                 if (action === 'remove') {
