@@ -126,6 +126,7 @@ async function main() {
                         `Group: ${id}`,
                         `Group Name: ${grouPName || 'unknown'}`,
                     ].join('\n'))
+                }
             }
         } catch (err) {
             console.log(`[ERROR] ${err.message}`)
