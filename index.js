@@ -93,7 +93,7 @@ async function main() {
             const self = sock.user.id.split(':')[0]
 
             try {
-                
+                const meta = await sock.gruou
             }
 
             for (const p of participants) {
