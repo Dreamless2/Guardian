@@ -32,6 +32,8 @@ async function notifyTelegramEvent(title, details = '') {
         console.log(`[Telegram] Failed to send ${title}: ${err.message}`)
     }
 }
+sdfsdfds
+
 
 async function main() {
     const { state, saveCreds } = await useMultiFileAuthState('auth_info')
