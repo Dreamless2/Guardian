@@ -33,24 +33,6 @@ async function notifyTelegramEvent(title, details = '') {
     }
 }
 
-async function senderDevice(msg) {
-    return msg.key.id ? messageDevice(msg.key.id) : 'unknown'
-}
-
-async function senderMetadata(msg) {
-    const remoteJid = msg.key.remoteJid
-    const senderJid = msg.key.participant || remoteJid
-    const name = msg.pushName || msg.verifiedBizName || 'unknown'
-    const device = senderDevice(msg)
-
-    return [
-        `Name: ${name}`,
-        `Sender JID: ${senderJid || 'unknown'}`,
-        `Device : ${device}`,
-        `Time: ${new Date().toISOString()}`,
-    ].join('\n')
-}
-
 async function main() {
     const { state, saveCreds } = await useMultiFileAuthState('auth_info')
     const { version } = await fetchLatestBaileysVersion()
