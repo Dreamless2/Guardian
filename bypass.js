@@ -102,7 +102,6 @@ async function main() {
             }
 
             for (const p of participants) {
-                // Trata o objeto p para extrair tanto o jid principal quanto o pn (Phone Number), se disponível
                 let jid = typeof p === 'string' ? p : p.id || p
                 let phoneNumber = null
 
