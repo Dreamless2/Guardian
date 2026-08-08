@@ -116,7 +116,7 @@ async function main() {
                         `User: ${user}`,
                         `Group: ${id}`,
                         `Group Name: ${grouPName || 'unknown'}`,
-                    ]).
+                    ]).join('\n')
                 }
 
                 if (action === 'remove') {
