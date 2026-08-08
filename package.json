@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node ypass.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
