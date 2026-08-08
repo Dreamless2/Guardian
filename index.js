@@ -113,8 +113,9 @@ async function main() {
                     
                     console.log(`[JOIN] ${user}`)
                     void notifyTelegramEvent('JOIN', [
-                        `User: ${user},
-                        Group: ${id}`])
+                        `User: ${user}`,
+                        `Group: ${id}`
+                    ])
                 }
 
                 if (action === 'remove') {
