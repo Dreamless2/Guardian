@@ -124,7 +124,7 @@ async function main() {
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `Group Name: ${groupName}`,
+                        `Group Name: ${groupName                        }`,
                     ].join('\n'))
                 }
 
