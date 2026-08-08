@@ -3,7 +3,16 @@ import qrcode from 'qrcode-terminal'
 import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
 
-const app = express()
+const app = express();
+const PORT = process.env.PORT || 9090;
+
+app.get('/', (req, res) => {
+  res.send('OK');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server executing On port ${PORT}`);
+});
 
 
 
