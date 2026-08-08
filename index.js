@@ -124,7 +124,7 @@ async function main() {
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `Group Name: ${grouPName || 'unknown'}`,
+                        `Group Name: ${groupName}`,
                     ].join('\n'))
                 }
 
@@ -133,7 +133,7 @@ async function main() {
                     void notifyTelegramEvent('LEAVE', [
                         `User: ${user}`,
                         `Group: ${id}`,
-                        `Group Name: ${groupName || 'unknown'}`,
+                        `Group Name: ${groupName}`,
                     ].join('\n'))
                 }
             }
