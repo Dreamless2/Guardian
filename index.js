@@ -94,7 +94,7 @@ async function main() {
 
             try {
                 const meta = await sock.groupMetadata(id)
-                
+                grouPName = meta.subject || 'unknown'
             }
 
             for (const p of participants) {
