@@ -120,8 +120,7 @@ async function main() {
                 }
 
                 if (action === 'remove') {
-                    void notifyTelegramEvent('LEAVE', [`User: ${user}`,
-                        `Group: ${id}`])
+                    console.log(`[LEAVE] ${user}`)                    
                     void notifyTelegramEvent('LEAVE', [`User: ${user}\nGroup: ${id}`])
                 }
             }
