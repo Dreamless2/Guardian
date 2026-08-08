@@ -1,6 +1,18 @@
 import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion } from 'baileys'
 import qrcode from 'qrcode-terminal'
 import { sendTelegramText, telegramEnabled } from './telegram.js'
+import express from 'express'
+
+const app = express();
+const PORT = process.env.PORT || 9090;
+
+app.get('/', (req, res) => {
+    res.send('OK');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server executing On port ${PORT}`);
+});
 
 const MSG = `BEM VINDO, @{user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 
@@ -102,10 +114,30 @@ async function main() {
             }
 
             for (const p of participants) {
-                const jid = typeof p === 'string' ? p : p.id || p
-                if (jid.includes(self)) continue
+                let jid = typeof p === 'string' ? p : p.id || p
+                let phoneNumber = null
 
-                const user = jid.split('@')[0]
+                if (typeof p === 'object' && p !== null) {
+                    if (p.phoneNumber) phoneNumber = p.phoneNumber.split('@')[0]
+                }
+
+                if (jid.endsWith('@lid')) {
+                    if (!phoneNumber) {
+                        try {
+                            const meta = await sock.groupMetadata(id)
+                            const participantMeta = meta.participants.find(m => m.id === jid || m.lid === jid)
+                            if (participantMeta && participantMeta.id && !participantMeta.id.endsWith('@lid')) {
+                                phoneNumber = participantMeta.id.split('@')[0]
+                            }
+                        } catch (_) { }
+                    }
+                } else {
+                    phoneNumber = jid.split('@')[0]
+                }
+
+                const user = phoneNumber || jid.split('@')[0]
+
+                if (jid.includes(self) || (phoneNumber && phoneNumber.includes(self))) continue
 
                 if (action === 'add') {
                     const now = Date.now()
@@ -120,18 +152,20 @@ async function main() {
                         mentions: [jid]
                     })
 
-                    console.log(`[JOIN] ${user}`)
+                    console.log(`[JOIN] ${user} (${jid})`)
                     void notifyTelegramEvent('JOIN', [
                         `User: ${user}`,
+                        `JID: ${jid}`,
                         `Group: ${id}`,
                         `Group Name: ${groupName}`,
                     ].join('\n'))
                 }
 
                 if (action === 'remove') {
-                    console.log(`[LEAVE] ${user}`)
+                    console.log(`[LEAVE] ${user} (${jid})`)
                     void notifyTelegramEvent('LEAVE', [
                         `User: ${user}`,
+                        `JID: ${jid}`,
                         `Group: ${id}`,
                         `Group Name: ${groupName}`,
                     ].join('\n'))
