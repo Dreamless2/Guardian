@@ -105,14 +105,11 @@ async function main() {
                 let jid = typeof p === 'string' ? p : p.id || p
                 let phoneNumber = null
 
-                // Se p for um objeto contendo a propriedade `phoneNumber` ou `jid`
                 if (typeof p === 'object' && p !== null) {
                     if (p.phoneNumber) phoneNumber = p.phoneNumber.split('@')[0]
                 }
 
-                // Se for LID e não achamos o phoneNumber no objeto
                 if (jid.endsWith('@lid')) {
-                    // Tenta buscar no cache/metadata do grupo se o objeto contiver a conversão
                     if (!phoneNumber) {
                         try {
                             const meta = await sock.groupMetadata(id)
