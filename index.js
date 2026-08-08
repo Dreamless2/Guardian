@@ -97,9 +97,7 @@ async function main() {
                 if (jid.includes(self)) continue
 
                 const user = jid.split('@')[0]
-                const sender = msg.key.remoteJid
-                const metadata = senderMetadata(msg)
-
+                               
                 if (action === 'add') {
                     const now = Date.now()
                     if (now - (cache.get(id) || 0) < RATE_LIMIT) return
