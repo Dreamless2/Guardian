@@ -94,7 +94,10 @@ async function main() {
 
             try {
                 const meta = await sock.groupMetadata(id)
-                grouPName = meta.subject || 'unknown'
+                groupName = meta.subject || 'unknown'
+            } catch (err) {
+                console.log(`[ERROR] Failed to fetch group metadata for ${id}: ${err.message}`)
+                groupName = 'unknown'
             }
 
             for (const p of participants) {
