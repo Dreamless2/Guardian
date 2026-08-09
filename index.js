@@ -2,7 +2,9 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaile
 import qrcode from 'qrcode-terminal'
 import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
+import pino from 'pino'
 
+/*
 const app = express();
 const PORT = process.env.PORT || 9090;
 
@@ -13,6 +15,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server executing On port ${PORT}`);
 });
+*/
 
 const MSG = `BEM VINDO, {user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 
@@ -23,7 +26,8 @@ const MSG = `BEM VINDO, {user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 QUALQUER DÚVIDA, ACIONAR OS ADMINISTRADORES DO GRUPO: 41987249964 (Krav Maga Capão da Imbuia Instrutor Elinton Lemes) e 31999524189 (Tiago da Silva Pereira)`
 
 const TARGETS = [
-    '120363424263007033@g.us',
+    //'120363424263007033@g.us',
+    '120363411718564785@g.us',
 ]
 
 const RATE_LIMIT = 12000
@@ -32,6 +36,13 @@ const cache = new Map()
 const wait = (ms) => new Promise(r => setTimeout(r, ms))
 const jitter = () => wait(Math.floor(Math.random() * 2500) + 1500)
 const formatError = (err) => err?.stack || err?.message || String(err)
+
+const PRESENCE_INTERVAL_MIN_MS = 4 * 60_000
+const PRESENCE_INTERVAL_MAX_MS = 80 * 60_000
+const PRESENCE_BLIP_MIN_MS = 1_000
+const PRESENCE_BLIP_MAX_MS = 120_000
+const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+let activeWhatsAppSocket = null
 
 async function notifyTelegramEvent(title, details = '') {
     if (!telegramEnabled()) return
@@ -46,12 +57,14 @@ async function notifyTelegramEvent(title, details = '') {
 }
 
 async function main() {
-    const { state, saveCreds } = await useMultiFileAuthState('auth_info')
+    const { state, saveCreds } = await useMultiFileAuthState('auth_info_android')
     const { version } = await fetchLatestBaileysVersion()
+    let presenceTimer = null
 
     const sock = makeWASocket({
         version,
         auth: state,
+        logger: pino({ level: 'silent' }),
         printQRInTerminal: false,
         markOnlineOnConnect: false,
         syncFullHistory: false,
@@ -72,9 +85,10 @@ async function main() {
         }
 
         if (connection === 'close') {
+            if (activeWhatsAppSocket === sock) activeWhatsAppSocket = null
+            if (presenceTimer) { clearTimeout(presenceTimer); presenceTimer = null }
             const statusCode = lastDisconnect?.error?.output?.statusCode
             const shouldReconnect = statusCode !== DisconnectReason.loggedOut
-
             console.log(`Connection closed. Reconnecting: ${shouldReconnect}`)
             void notifyTelegramEvent('DISCONNECTED', [
                 `Status code: ${statusCode || 'unknown'}`,
@@ -82,19 +96,28 @@ async function main() {
                 `Error: ${formatError(lastDisconnect?.error || 'unknown')}`,
             ].join('\n'))
 
-            if (shouldReconnect) {
-                await wait(5000)
-                main()
-            } else {
-                console.log('[auth] session expired')
-                void notifyTelegramEvent('SESSION EXPIRED')
-            }
-        }
-
-        if (connection === 'open') {
+            if (shouldReconnect) main()
+        } else if (connection === 'open') {
+            activeWhatsAppSocket = sock
             const id = sock.user.id.split(':')[0]
             console.log(`Connected as ${id}`)
             void notifyTelegramEvent('ONLINE', `Number: ${id}`)
+
+            const schedulePresence = () => {
+                const delay = randomBetween(PRESENCE_INTERVAL_MIN_MS, PRESENCE_INTERVAL_MAX_MS)
+                presenceTimer = setTimeout(async () => {
+                    try {
+                        await sock.sendPresenceUpdate('available')
+                        await new Promise(r => setTimeout(r, randomBetween(PRESENCE_BLIP_MIN_MS, PRESENCE_BLIP_MAX_MS)))
+                        await sock.sendPresenceUpdate('unavailable')
+                    } catch (err) {
+                        console.log(`[Presence] Failed: ${err.message}`)
+                        void notifyTelegramEvent('PRESENCE ERROR', formatError(err))
+                    }
+                    schedulePresence()
+                }, delay)
+            }
+            schedulePresence()
         }
     })
 
@@ -190,5 +213,7 @@ process.on('uncaughtException', (err) => {
     console.log(`[Uncaught Exception] ${formatError(err)}`)
     void notifyTelegramEvent('UNCAUGHT EXCEPTION', formatError(err))
 })
+
+
 
 main()
