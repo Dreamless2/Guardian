@@ -1,7 +1,6 @@
 {
   "name": "Guardian",
-  "description": "",
-
+  "description": "Watcher for Whatsapp groups",
   "type": "module",
   "scripts": {
     "start": "node index.js"
