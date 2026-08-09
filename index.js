@@ -4,7 +4,6 @@ import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
 import pino from 'pino'
 
-
 const app = express();
 const PORT = process.env.PORT || 9090;
 
@@ -15,7 +14,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server executing On port ${PORT}`);
 });
-*/
+
 
 const MSG = `BEM VINDO, {user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 
