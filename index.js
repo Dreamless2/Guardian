@@ -1,4 +1,4 @@
-import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, jid } from 'baileys'
+import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, jidNormalizedUser } from 'baileys'
 import qrcode from 'qrcode-terminal'
 import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
