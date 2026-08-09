@@ -4,7 +4,7 @@ import { sendTelegramText, telegramEnabled } from './telegram.js'
 import express from 'express'
 import pino from 'pino'
 
-/*
+
 const app = express();
 const PORT = process.env.PORT || 9090;
 
