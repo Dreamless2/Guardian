@@ -1,6 +1,7 @@
 {
-  "name": "Guardian".
-  
+  "name": "Guardian",
+  "description": "",
+
   "type": "module",
   "scripts": {
     "start": "node index.js"
