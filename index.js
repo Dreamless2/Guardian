@@ -25,8 +25,8 @@ const MSG = `BEM VINDO, {user}, AO "PAPO RETO GUITARS" (Cleiton Feijó)
 QUALQUER DÚVIDA, ACIONAR OS ADMINISTRADORES DO GRUPO: 41987249964 (Krav Maga Capão da Imbuia Instrutor Elinton Lemes) e 31999524189 (Tiago da Silva Pereira)`
 
 const TARGETS = [
-    //'120363424263007033@g.us',
-    '120363411718564785@g.us',
+    '120363424263007033@g.us',
+    
 ]
 
 const RATE_LIMIT = 12000
